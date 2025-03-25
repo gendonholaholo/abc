@@ -14,3 +14,8 @@ dist/
 
 venv/
 node_modules/
+
+scripts/
+
+.gitignore
+.gitattributes
