@@ -1,0 +1,11 @@
+services:
+  hris_web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      APP_BASE_PATH: ${APP_BASE_PATH:-/}
+      API_BASE_URL: ${API_BASE_URL:-https://api.example.com}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
