@@ -1,0 +1,26 @@
+name: hris_attendance_app
+description: A Flutter-based HRIS attendance app with Dockerized production setup.
+version: 0.1.0
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  flutter_riverpod: ^2.5.1
+  intl: ^0.18.1
+  shared_preferences: ^2.2.3
+
+  # Optional HTTP client placeholder
+  dio: ^5.4.2+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
