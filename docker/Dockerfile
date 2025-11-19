@@ -4,7 +4,9 @@ WORKDIR /app
 COPY . .
 RUN flutter config --enable-web \
   && flutter pub get \
-  && flutter build web --release --base-href=${APP_BASE_PATH:-/}
+  && flutter build web --release \
+    --dart-define=API_BASE_URL=${API_BASE_URL:-https://api.example.com} \
+    --base-href=${APP_BASE_PATH:-/}
 
 # Runtime stage
 FROM nginx:1.25-alpine

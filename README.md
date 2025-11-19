@@ -26,12 +26,12 @@ docker/           # Dockerfile, nginx.conf, entrypoint
 Pastikan Flutter SDK sudah terpasang.
 ```
 flutter pub get
-flutter run -d chrome
+flutter run -d chrome --dart-define=API_BASE_URL=https://api.example.com
 ```
 
 ## Build Flutter Web
 ```
-flutter build web --release
+flutter build web --release --dart-define=API_BASE_URL=https://api.example.com
 ```
 
 ## Docker (produksi)
@@ -42,9 +42,9 @@ docker compose up -d
 ```
 
 ### Variabel lingkungan
-Salin `.env.example` menjadi `.env` lalu sesuaikan:
+Salin `.env.example` menjadi `.env` atau gunakan `--dart-define` saat build/run:
 - `APP_BASE_PATH`: prefix URL jika di-serve di subpath.
-- `API_BASE_URL`: URL backend HRIS aktual (saat ini mock di sisi klien).
+- `API_BASE_URL`: URL backend HRIS aktual.
 
 ## Catatan produksi
 - Nginx sudah dikonfigurasi untuk cache dan gzip dasar.

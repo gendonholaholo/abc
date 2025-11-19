@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/attendance_log.dart';
 import '../services/hris_api_client.dart';
+import '../storage/local_store.dart';
 import 'session_provider.dart';
 
 final attendanceProvider =
@@ -10,7 +11,9 @@ final attendanceProvider =
 );
 
 class AttendanceController extends StateNotifier<AsyncValue<List<AttendanceLog>>> {
-  AttendanceController(this._read) : super(const AsyncValue.data([]));
+  AttendanceController(this._read) : super(const AsyncValue.data([])) {
+    loadHistory();
+  }
 
   final Reader _read;
 
@@ -26,8 +29,14 @@ class AttendanceController extends StateNotifier<AsyncValue<List<AttendanceLog>>
     state = const AsyncValue.loading();
     try {
       final logs = await _read(hrisClientProvider).fetchHistory();
+      await _read(localStoreProvider).cacheLogs(logs);
       state = AsyncValue.data(logs);
     } catch (err, stack) {
+      final cached = await _read(localStoreProvider).loadLogs();
+      if (cached != null) {
+        state = AsyncValue.data(cached);
+        return;
+      }
       state = AsyncValue.error(err, stackTrace: stack);
     }
   }
@@ -40,8 +49,14 @@ class AttendanceController extends StateNotifier<AsyncValue<List<AttendanceLog>>
     try {
       await _read(hrisClientProvider).clock(type: type, location: location);
       final logs = await _read(hrisClientProvider).fetchHistory();
+      await _read(localStoreProvider).cacheLogs(logs);
       state = AsyncValue.data(logs);
     } catch (err, stack) {
+      final cached = await _read(localStoreProvider).loadLogs();
+      if (cached != null) {
+        state = AsyncValue.data(cached);
+        return;
+      }
       state = AsyncValue.error(err, stackTrace: stack);
     }
   }
